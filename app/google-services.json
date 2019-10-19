@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "183151648265",
+    "firebase_url": "https://antiragginglnmiit.firebaseio.com",
+    "project_id": "antiragginglnmiit",
+    "storage_bucket": "antiragginglnmiit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183151648265:android:f763bfa53b8680c95122d8",
+        "android_client_info": {
+          "package_name": "com.imad.antiragging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183151648265-up0m3dp41qu9bnaks5svh8g0ct05de8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imad.antiragging",
+            "certificate_hash": "a6f6a5ba00f4fcbb1d7b1aa7febea3bf4a100057"
+          }
+        },
+        {
+          "client_id": "183151648265-9nog11i0ve1fmsijsq1nl6kpeher9r9s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXdAON13i0cyXr9ih8yMpT8uL_yCcTJaY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183151648265-9nog11i0ve1fmsijsq1nl6kpeher9r9s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
