@@ -1,12 +1,13 @@
 package com.imad.antiragging;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,12 +21,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             new AuthUI.IdpConfig.EmailBuilder().build(),
             new AuthUI.IdpConfig.GoogleBuilder().build());
 
+    private NavigationView navigationView;
     private AppBarConfiguration mAppBarConfiguration;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,22 +65,16 @@ public class MainActivity extends AppCompatActivity {
                                     .setIsSmartLockEnabled(false)
                                     .build(),
                             RC_SIGN_IN);
+                } else {
+                    setUpUi();
                 }
             }
         };
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -122,8 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             dialog.show();
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -150,12 +144,29 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == RC_SIGN_IN){
-            IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if(resultCode != RESULT_OK){
                 Toast.makeText(getApplicationContext(), "Sign In Cancelled", Toast.LENGTH_SHORT).show();
                 finish();
             }
+        }
+    }
+
+    private void setUpUi(){
+        View header = navigationView.getHeaderView(0);
+        ImageView profile = header.findViewById(R.id.profile_image);
+        TextView name = header.findViewById(R.id.name);
+        TextView email = header.findViewById(R.id.email);
+
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if(currentUser != null) {
+            Glide.with(this).load(currentUser.getPhotoUrl()).into(profile);
+            name.setText(currentUser.getDisplayName());
+            email.setText(currentUser.getEmail());
+        } else {
+            Glide.with(this).load(R.drawable.ic_person_black_24dp).into(profile);
+            name.setText("");
+            email.setText("");
         }
     }
 }
