@@ -1,0 +1,91 @@
+package com.imad.antiragging.ui.home;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.imad.antiragging.R;
+import com.imad.antiragging.data.Post;
+
+import java.util.List;
+
+public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
+
+    private FirebaseFirestore db;
+    private FirebaseAuth auth;
+    private List<Post> dataset;
+    public static class MyViewHolder extends  RecyclerView.ViewHolder{
+        private TextView date;
+        private TextView name;
+        private TextView post;
+        private ImageButton delete;
+        private ImageView image;
+
+        MyViewHolder(final View itemView){
+            super(itemView);
+            date = itemView.findViewById(R.id.date);
+            name = itemView.findViewById(R.id.user_name);
+            post = itemView.findViewById(R.id.post);
+            delete = itemView.findViewById(R.id.delete);
+            image = itemView.findViewById(R.id.user_image);
+        }
+    }
+
+    PostAdapter(List<Post> dataset){
+        this.dataset = dataset;
+    }
+
+    @NonNull
+    @Override
+    public PostAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_post, parent, false);
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        return new MyViewHolder(itemView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final PostAdapter.MyViewHolder holder, final int position) {
+        Post currentPost = dataset.get(position);
+        holder.post.setText(currentPost.getPost());
+        Glide.with(holder.image.getContext())
+                .load(currentPost.getImage())
+                .into(holder.image);
+        holder.name.setText(currentPost.getName());
+        if (auth.getCurrentUser().getUid().equals(currentPost.getUserid())){
+            holder.delete.setVisibility(View.VISIBLE);
+        } else {
+            holder.delete.setVisibility(View.GONE);
+        }
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                db.collection("Posts")
+                        .document(dataset.get(position).getDate().getSeconds()+"")
+                        .delete();
+                dataset.remove(position);
+                notifyDataSetChanged();
+            }
+        });
+        holder.date.setText(currentPost.getDate().toDate().toString());
+    }
+
+    @Override
+    public int getItemCount() {
+        return dataset.size();
+    }
+
+
+
+}

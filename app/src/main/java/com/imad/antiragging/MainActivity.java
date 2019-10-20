@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -160,7 +161,10 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = auth.getCurrentUser();
         if(currentUser != null) {
-            Glide.with(this).load(currentUser.getPhotoUrl()).into(profile);
+            if(currentUser.getPhotoUrl() == null || currentUser.getPhotoUrl().toString().isEmpty())
+                Glide.with(this).load(R.drawable.ic_person_black_24dp).into(profile);
+            else
+                Glide.with(this).load(currentUser.getPhotoUrl()).into(profile);
             name.setText(currentUser.getDisplayName());
             email.setText(currentUser.getEmail());
         } else {
