@@ -25,7 +25,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private List<Post> dataset;
-    public static class MyViewHolder extends  RecyclerView.ViewHolder{
+    static class MyViewHolder extends  RecyclerView.ViewHolder{
         private TextView date;
         private TextView name;
         private TextView post;
@@ -102,7 +102,5 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     public int getItemCount() {
         return dataset.size();
     }
-
-
 
 }
