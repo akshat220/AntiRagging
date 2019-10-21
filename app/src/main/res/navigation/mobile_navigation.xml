@@ -18,27 +18,21 @@
         tools:layout="@layout/fragment_sos" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.imad.antiragging.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_locate"
+        android:name="com.imad.antiragging.ui.locate.LocateFragment"
+        android:label="@string/menu_locate"
+        tools:layout="@layout/fragment_locate" />
 
     <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.imad.antiragging.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
+        android:id="@+id/nav_squad"
+        android:name="com.imad.antiragging.ui.squad.SquadFragment"
+        android:label="@string/menu_squad"
+        tools:layout="@layout/fragment_squad" />
 
     <fragment
-        android:id="@+id/nav_share"
-        android:name="com.imad.antiragging.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="com.imad.antiragging.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
+        android:id="@+id/nav_about"
+        android:name="com.imad.antiragging.ui.about.AboutFragment"
+        android:label="@string/menu_about"
+        tools:layout="@layout/fragment_about" />
 
 </navigation>
