@@ -1,14 +1,15 @@
 package com.imad.antiragging.ui.home;
 
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -71,11 +72,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.collection("Posts")
-                        .document(dataset.get(position).getDate().getSeconds()+"")
-                        .delete();
-                dataset.remove(position);
-                notifyDataSetChanged();
+
+                AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
+                dialog.setTitle("Delete Post");
+                dialog.setMessage("Are you sure you want to Delete the post");
+                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        db.collection("Posts")
+                                .document(dataset.get(position).getDate().getSeconds()+"")
+                                .delete();
+                        dataset.remove(position);
+                        notifyDataSetChanged();
+                    }
+                });
+                dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                dialog.show();
             }
         });
         holder.date.setText(currentPost.getDate().toDate().toString());

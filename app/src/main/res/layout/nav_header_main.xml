@@ -14,9 +14,9 @@
 
     <androidx.cardview.widget.CardView
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        app:cardCornerRadius="48dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        app:cardCornerRadius="36dp"
         android:background="@android:color/transparent">
 
         <ImageView
