@@ -35,6 +35,7 @@ public class LocateFragment extends Fragment {
     private TextView address;
     private static final int MY_CODE = 94;
     private LocationManager locationManager;
+    private LocationListener locationListener;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,7 +46,7 @@ public class LocateFragment extends Fragment {
         pick = root.findViewById(R.id.pick);
         address = root.findViewById(R.id.location);
         locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
-        final LocationListener locationListener = new LocationListener() {
+        locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 setAddress(location);
@@ -127,5 +128,11 @@ public class LocateFragment extends Fragment {
                 });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        locationManager.removeUpdates(locationListener);
     }
 }

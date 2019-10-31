@@ -1,6 +1,8 @@
 package com.imad.antiragging.ui.sos;
 
 import android.Manifest;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.imad.antiragging.R;
+import com.imad.antiragging.SosWidget;
 
 public class SosFragment extends Fragment {
 
@@ -51,6 +54,7 @@ public class SosFragment extends Fragment {
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("Phone", phoneNumber.getText().toString());
                     editor.commit();
+                    updateWidget();
                     Toast.makeText(getContext(), "Phone Number Saved", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -74,6 +78,7 @@ public class SosFragment extends Fragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(requestCode == MY_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            updateWidget();
             callNow();
         }
     }
@@ -86,5 +91,13 @@ public class SosFragment extends Fragment {
             Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
             startActivity(callIntent);
         }
+    }
+
+    private void updateWidget(){
+        Intent intent = new Intent(getContext(), SosWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        int[] ids = AppWidgetManager.getInstance(getActivity()).getAppWidgetIds(new ComponentName(getActivity(), SosWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+        getActivity().sendBroadcast(intent);
     }
 }
