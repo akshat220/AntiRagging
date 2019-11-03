@@ -1,5 +1,7 @@
 package com.imad.antiragging.ui.home;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,13 +35,15 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseAuth auth;
     private PostAdapter postAdapter;
+    private EditText message;
+    private ImageButton send;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final EditText message = root.findViewById(R.id.msg_text);
-        final ImageButton send = root.findViewById(R.id.send);
+        message = root.findViewById(R.id.msg_text);
+        send = root.findViewById(R.id.send);
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -53,21 +58,7 @@ public class HomeFragment extends Fragment {
             public void onClick(View view) {
                 FirebaseUser user = auth.getCurrentUser();
                 if(!message.getText().toString().isEmpty()){
-                    String url;
-                    if(user.getPhotoUrl() != null)
-                        url = user.getPhotoUrl().toString();
-                    else
-                        url = "";
-                    Post post = new Post(user.getDisplayName(),
-                            Timestamp.now(),
-                            message.getText().toString(),
-                            url,
-                            user.getUid());
-                    db.collection("Posts")
-                            .document(post.getDate().getSeconds()+"")
-                            .set(post);
-                    message.setText("");
-                    updateData();
+                    showAnonymousAlert(message.getText().toString());
                 }
             }
         });
@@ -98,6 +89,51 @@ public class HomeFragment extends Fragment {
         super.onResume();
         dataset.clear();
         postAdapter.notifyDataSetChanged();
+        updateData();
+    }
+
+    private void showAnonymousAlert(final String msg) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder
+                .setTitle("Anonymous Post")
+                .setMessage("Do you want to post this as Anonymous.")
+                .setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Post post = new Post("Anonymous",
+                                        Timestamp.now(),
+                                        msg,
+                                        "",
+                                        auth.getCurrentUser().getUid());
+                                addPost(post);
+                            }
+                        })
+                .setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                FirebaseUser user = auth.getCurrentUser();
+                                String url;
+                                if(user.getPhotoUrl() != null)
+                                    url = user.getPhotoUrl().toString();
+                                else
+                                    url = "";
+                                Post post = new Post(user.getDisplayName(),
+                                        Timestamp.now(),
+                                        msg,
+                                        url,
+                                        user.getUid());
+                                addPost(post);
+                            }
+                        });
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    private void addPost(Post post){
+        db.collection("Posts")
+                .document(post.getDate().getSeconds()+"")
+                .set(post);
+        message.setText("");
         updateData();
     }
 }

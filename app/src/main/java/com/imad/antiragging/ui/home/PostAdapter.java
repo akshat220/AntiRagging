@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.imad.antiragging.R;
 import com.imad.antiragging.data.Post;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
@@ -60,9 +61,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     public void onBindViewHolder(@NonNull final PostAdapter.MyViewHolder holder, final int position) {
         Post currentPost = dataset.get(position);
         holder.post.setText(currentPost.getPost());
-        Glide.with(holder.image.getContext())
-                .load(currentPost.getImage())
-                .into(holder.image);
+        if(currentPost.getImage().isEmpty()){
+            holder.image.setImageResource(R.drawable.ic_person_black_24dp);
+        } else {
+            Glide.with(holder.image.getContext())
+                    .load(currentPost.getImage())
+                    .into(holder.image);
+        }
         holder.name.setText(currentPost.getName());
         if (auth.getCurrentUser().getUid().equals(currentPost.getUserid())){
             holder.delete.setVisibility(View.VISIBLE);
@@ -95,7 +100,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 dialog.show();
             }
         });
-        holder.date.setText(currentPost.getDate().toDate().toString());
+        SimpleDateFormat format = new SimpleDateFormat("K:mm a E, MMM d");
+        String date = format.format(currentPost.getDate().toDate());
+        holder.date.setText(date);
     }
 
     @Override
