@@ -77,7 +77,7 @@ public class LocateFragment extends Fragment {
                 } else {
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                                0, 0, locationListener);
+                                0, 20, locationListener);
                     }else{
                         showGPSDisabledAlert();
                     }
@@ -89,7 +89,11 @@ public class LocateFragment extends Fragment {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                String shareBody = "Help me! Someone is ragging me. Please help me at:\n" + address.getText();
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share Using"));
             }
         });
         return root;
