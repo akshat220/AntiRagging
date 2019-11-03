@@ -12,6 +12,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Arrays;
 import java.util.List;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                                     .build(),
                             RC_SIGN_IN);
                 } else {
+                    FirebaseMessaging.getInstance().subscribeToTopic("Notification");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
