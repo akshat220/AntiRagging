@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -80,7 +81,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         }
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
                 dialog.setTitle("Delete Post");
@@ -98,7 +99,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 });
                 dialog.show();
@@ -107,7 +107,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                showDialog(position, view);
             }
         });
         SimpleDateFormat format = new SimpleDateFormat("K:mm a E, MMM d");
@@ -118,6 +118,31 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public int getItemCount() {
         return dataset.size();
+    }
+
+    private void showDialog(final int position, View view){
+        View root = LayoutInflater.from(view.getContext()).inflate(R.layout.item_edit_post, null);
+        final EditText editText = root.findViewById(R.id.edit);
+        editText.setText(dataset.get(position).getPost());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
+        dialog.setTitle("Edit Post");
+        dialog.setView(root);
+        dialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                db.collection("Posts")
+                        .document(dataset.get(position).getDate().getSeconds() + "")
+                        .update("post", editText.getText().toString());
+                dataset.get(position).setPost(editText.getText().toString());
+                notifyDataSetChanged();
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dialog.show();
     }
 
 }

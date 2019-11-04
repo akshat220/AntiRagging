@@ -104,6 +104,7 @@ public class LocateFragment extends Fragment {
     }
 
     private void setAddress(Location location){
+        locationManager.removeUpdates(locationListener);
         Geocoder geocoder = new Geocoder(getContext(), Locale.ENGLISH);
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
@@ -127,13 +128,13 @@ public class LocateFragment extends Fragment {
                                         android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 startActivity(callGPSSettingIntent);
                             }
-                        });
-        alertDialogBuilder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                        })
+                .setNegativeButton("Cancel",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
         AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
