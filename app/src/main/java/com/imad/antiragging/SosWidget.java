@@ -26,12 +26,10 @@ public class SosWidget extends AppWidgetProvider {
             Intent callIntent;
             String phone = sp.getString("Phone", "");
             if (phone.isEmpty()) {
-                Toast.makeText(context, "Phone Number not saved. Please save a number", Toast.LENGTH_SHORT).show();
                 callIntent = new Intent(context, LoginActivity.class);
             } else {
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     callIntent = new Intent(context, LoginActivity.class);
-                    Toast.makeText(context, "Permission to make calls not given.", Toast.LENGTH_SHORT).show();
                 } else {
                     callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phone));
                 }

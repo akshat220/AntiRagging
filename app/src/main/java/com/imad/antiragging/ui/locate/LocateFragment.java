@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,7 @@ public class LocateFragment extends Fragment {
     private static final int MY_CODE = 94;
     private LocationManager locationManager;
     private LocationListener locationListener;
-
+    private ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,12 +46,14 @@ public class LocateFragment extends Fragment {
         share = root.findViewById(R.id.share);
         pick = root.findViewById(R.id.pick);
         address = root.findViewById(R.id.location);
+        progressBar = getActivity().findViewById(R.id.progress_bar);
         locationManager = (LocationManager) getContext().getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                 setAddress(location);
                 share.setEnabled(true);
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -72,12 +75,13 @@ public class LocateFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED){
+                        == PackageManager.PERMISSION_DENIED){
                     requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_CODE);
                 } else {
                     if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                                 0, 20, locationListener);
+                        progressBar.setVisibility(View.VISIBLE);
                     }else{
                         showGPSDisabledAlert();
                     }

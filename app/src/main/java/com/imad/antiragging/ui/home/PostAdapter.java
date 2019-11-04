@@ -31,6 +31,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         private TextView name;
         private TextView post;
         private ImageButton delete;
+        private ImageButton edit;
         private ImageView image;
 
         MyViewHolder(final View itemView){
@@ -38,6 +39,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             date = itemView.findViewById(R.id.date);
             name = itemView.findViewById(R.id.user_name);
             post = itemView.findViewById(R.id.post);
+            edit = itemView.findViewById(R.id.edit);
             delete = itemView.findViewById(R.id.delete);
             image = itemView.findViewById(R.id.user_image);
         }
@@ -71,8 +73,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.name.setText(currentPost.getName());
         if (auth.getCurrentUser().getUid().equals(currentPost.getUserid())){
             holder.delete.setVisibility(View.VISIBLE);
+            holder.edit.setVisibility(View.VISIBLE);
         } else {
             holder.delete.setVisibility(View.GONE);
+            holder.edit.setVisibility(View.GONE);
         }
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +102,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     }
                 });
                 dialog.show();
+            }
+        });
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
         SimpleDateFormat format = new SimpleDateFormat("K:mm a E, MMM d");

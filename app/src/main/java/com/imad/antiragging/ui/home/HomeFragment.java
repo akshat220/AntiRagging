@@ -1,13 +1,13 @@
 package com.imad.antiragging.ui.home;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -37,6 +37,7 @@ public class HomeFragment extends Fragment {
     private PostAdapter postAdapter;
     private EditText message;
     private ImageButton send;
+    private ProgressBar progressBar;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -44,7 +45,7 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         message = root.findViewById(R.id.msg_text);
         send = root.findViewById(R.id.send);
-
+        progressBar = getActivity().findViewById(R.id.progress_bar);
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
         dataset = new ArrayList<>();
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void updateData(){
+        progressBar.setVisibility(View.VISIBLE);
         db.collection("Posts")
                 .orderBy("date", Query.Direction.DESCENDING)
                 .get()
@@ -80,6 +82,7 @@ public class HomeFragment extends Fragment {
                         dataset.clear();
                         dataset.addAll(data);
                         postAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }

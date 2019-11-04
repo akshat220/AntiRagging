@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         TextView name = header.findViewById(R.id.name);
         TextView email = header.findViewById(R.id.email);
 
+
         FirebaseUser currentUser = auth.getCurrentUser();
         if(currentUser != null) {
             if(currentUser.getPhotoUrl() == null || currentUser.getPhotoUrl().toString().isEmpty())

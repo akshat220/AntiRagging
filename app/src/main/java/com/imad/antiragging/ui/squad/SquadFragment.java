@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -29,6 +30,7 @@ public class SquadFragment extends Fragment {
     private FirebaseFirestore db;
     private List<Member> dataset;
     private SquadAdapter squadAdapter;
+    private ProgressBar progressBar;
     private static final int MY_CODE = 56;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class SquadFragment extends Fragment {
                 == PackageManager.PERMISSION_DENIED) {
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, MY_CODE);
         }
+        progressBar = getActivity().findViewById(R.id.progress_bar);
         RecyclerView list = root.findViewById(R.id.member_list);
         squadAdapter = new SquadAdapter(dataset);
         list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
@@ -49,6 +52,7 @@ public class SquadFragment extends Fragment {
     }
 
     private void updateData(){
+        progressBar.setVisibility(View.VISIBLE);
         db.collection("Squad")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -61,6 +65,7 @@ public class SquadFragment extends Fragment {
                         dataset.clear();
                         dataset.addAll(data);
                         squadAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }
