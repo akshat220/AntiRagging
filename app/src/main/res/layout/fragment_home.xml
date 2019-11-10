@@ -11,7 +11,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"/>
 
-
     <androidx.cardview.widget.CardView
 
         android:background="@android:color/transparent"
@@ -24,14 +23,15 @@
             android:layout_height="wrap_content">
 
             <EditText
+                android:inputType="text"
                 android:gravity="center_vertical"
                 android:id="@+id/msg_text"
                 android:background="@android:color/transparent"
-                android:hint="Enter Message"
+                android:hint="@string/enter_message"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="8dp"
-                android:paddingRight="56dp"/>
+                android:paddingStart="8dp"
+                android:paddingEnd="56dp"/>
 
             <androidx.cardview.widget.CardView
                 android:layout_alignParentEnd="true"
@@ -47,7 +47,6 @@
                     android:src="@drawable/ic_menu_send"/>
 
             </androidx.cardview.widget.CardView>
-
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

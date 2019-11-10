@@ -27,7 +27,6 @@ public class SosFragment extends Fragment {
 
     private static final int MY_CODE = 8934;
     private EditText phoneNumber;
-    private Button save, call;
     private SharedPreferences sp;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -35,8 +34,8 @@ public class SosFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_sos, container, false);
         phoneNumber = root.findViewById(R.id.phone_number);
-        save = root.findViewById(R.id.save_button);
-        call = root.findViewById(R.id.call_button);
+        Button save = root.findViewById(R.id.save_button);
+        Button call = root.findViewById(R.id.call_button);
 
         sp = getContext().getSharedPreferences("com.imad.antiragging.phone",
                 Context.MODE_PRIVATE);

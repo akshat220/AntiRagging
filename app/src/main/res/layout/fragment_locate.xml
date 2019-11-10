@@ -19,7 +19,7 @@
         <TextView
             android:layout_margin="20dp"
             android:gravity="center"
-            android:text="Tap pick location to get your location"
+            android:text="@string/tap_pick_location"
             android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="128dp"/>
@@ -30,7 +30,7 @@
             android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick Location"
+            android:text="@string/pick_location"
             android:background="@color/colorAccent"/>
 
     </LinearLayout>
@@ -40,6 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
-        android:text="Share Location"/>
+        android:text="@string/share_location"/>
 
 </LinearLayout>

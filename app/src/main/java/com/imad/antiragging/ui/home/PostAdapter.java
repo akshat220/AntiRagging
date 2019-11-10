@@ -21,6 +21,7 @@ import com.imad.antiragging.data.Post;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
 
@@ -110,7 +111,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 showDialog(position, view);
             }
         });
-        SimpleDateFormat format = new SimpleDateFormat("K:mm a E, MMM d");
+        SimpleDateFormat format = new SimpleDateFormat("K:mm a E, MMM d", Locale.ENGLISH);
         String date = format.format(currentPost.getDate().toDate());
         holder.date.setText(date);
     }

@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 

@@ -8,7 +8,7 @@
         android:textSize="20sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="\u2022"/>
+        android:text="@string/bullet_point"/>
 
     <TextView
         android:id="@+id/guideline"

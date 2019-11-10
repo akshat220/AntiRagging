@@ -1,6 +1,8 @@
 package com.imad.antiragging.ui.squad;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,12 +24,13 @@ public class SquadAdapter extends RecyclerView.Adapter<SquadAdapter.MyViewHolder
 
     private FirebaseFirestore db;
     private List<Member> dataset;
-    static class MyViewHolder extends  RecyclerView.ViewHolder{
+
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView role;
         private TextView name;
         private ImageButton call;
 
-        MyViewHolder(final View itemView){
+        MyViewHolder(final View itemView) {
             super(itemView);
             role = itemView.findViewById(R.id.role);
             name = itemView.findViewById(R.id.name);
@@ -34,7 +38,7 @@ public class SquadAdapter extends RecyclerView.Adapter<SquadAdapter.MyViewHolder
         }
     }
 
-    SquadAdapter(List<Member> dataset){
+    SquadAdapter(List<Member> dataset) {
         this.dataset = dataset;
     }
 
@@ -56,6 +60,10 @@ public class SquadAdapter extends RecyclerView.Adapter<SquadAdapter.MyViewHolder
             @Override
             public void onClick(View view) {
                 Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + currentMember.getPhone()));
+                if (ActivityCompat.checkSelfPermission(holder.call.getContext(),Manifest.permission.CALL_PHONE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
                 view.getContext().startActivity(callIntent);
             }
         });

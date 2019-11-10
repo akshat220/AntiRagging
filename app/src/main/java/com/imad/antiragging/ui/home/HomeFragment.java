@@ -57,7 +57,6 @@ public class HomeFragment extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseUser user = auth.getCurrentUser();
                 if(!message.getText().toString().isEmpty()){
                     showAnonymousAlert(message.getText().toString());
                 }

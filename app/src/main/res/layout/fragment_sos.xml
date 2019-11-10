@@ -15,7 +15,7 @@
             android:maxLength="10"
             android:id="@+id/phone_number"
             android:inputType="phone"
-            android:hint="Enter Emergency Contact"
+            android:hint="@string/emergency_hint"
             android:layout_width="match_parent"
             android:layout_height="48dp"/>
 
@@ -23,7 +23,7 @@
             android:id="@+id/save_button"
             android:layout_marginTop="12dp"
             android:background="@color/colorAccent"
-            android:text="Save"
+            android:text="@string/save"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -35,5 +35,5 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorAccent"
-        android:text="Call Now"/>
+        android:text="@string/call_now"/>
 </LinearLayout>
