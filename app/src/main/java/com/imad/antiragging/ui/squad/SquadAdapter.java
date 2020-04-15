@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.imad.antiragging.R;
 import com.imad.antiragging.data.Member;
 
@@ -22,7 +21,6 @@ import java.util.List;
 
 public class SquadAdapter extends RecyclerView.Adapter<SquadAdapter.MyViewHolder> {
 
-    private FirebaseFirestore db;
     private List<Member> dataset;
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -47,7 +45,6 @@ public class SquadAdapter extends RecyclerView.Adapter<SquadAdapter.MyViewHolder
     public SquadAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_member, parent, false);
-        db = FirebaseFirestore.getInstance();
         return new MyViewHolder(itemView);
     }
 

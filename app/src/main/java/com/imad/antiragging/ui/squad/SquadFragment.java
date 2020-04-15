@@ -19,11 +19,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.imad.antiragging.R;
 import com.imad.antiragging.data.Member;
+import com.imad.antiragging.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SquadFragment extends Fragment {
 
@@ -38,11 +39,11 @@ public class SquadFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         dataset = new ArrayList<>();
 
-        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE)
+        if(ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CALL_PHONE)
                 == PackageManager.PERMISSION_DENIED) {
             requestPermissions(new String[]{Manifest.permission.CALL_PHONE}, MY_CODE);
         }
-        progressBar = getActivity().findViewById(R.id.progress_bar);
+        progressBar = Objects.requireNonNull(getActivity()).findViewById(R.id.progress_bar);
         RecyclerView list = root.findViewById(R.id.member_list);
         squadAdapter = new SquadAdapter(dataset);
         list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));

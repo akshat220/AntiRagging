@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "183151648265-57i02n0nbaqi5826pgd1ec494dmdlaqn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imad.antiragging",
+            "certificate_hash": "5316ed588c959d8a72c319515c5a4440c93225d8"
+          }
+        },
+        {
           "client_id": "183151648265-up0m3dp41qu9bnaks5svh8g0ct05de8t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
