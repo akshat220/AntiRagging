@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <ImageView
+        android:contentDescription="@string/sos_call_button"
         android:background="@android:color/transparent"
         android:layout_width="48dp"
         android:layout_height="48dp"

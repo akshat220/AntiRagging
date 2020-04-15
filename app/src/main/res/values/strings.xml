@@ -39,4 +39,11 @@
     <string name="delete_post">Delete Post</string>
     <string name="delete_post_content">Are you sure you want to Delete the post</string>
     <string name="yes">Yes</string>
+    <string name="download_guidlines">Download Guidlines</string>
+    <string name="guideline_url"><![CDATA[https://firebasestorage.googleapis.com/v0/b/antiragginglnmiit.appspot.com/o/anti_ragging_guidelines.png?alt=media&token=90dbb2ff-7eeb-4d45-a47b-66fa79287063]]></string>
+    <string name="download_successful">image downloaded via IntentService is successfully</string>
+    <string name="sos_call_button">SOS call button</string>
+    <string name="user_profile_picture">User Profile Picture</string>
+    <string name="call_button">Call Button</string>
+    <string name="ui_image">UI image</string>
 </resources>

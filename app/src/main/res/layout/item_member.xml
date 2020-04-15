@@ -47,7 +47,8 @@
             android:background="@color/colorAccent"
             android:src="@drawable/ic_call_black_24dp"
             android:layout_width="64dp"
-            android:layout_height="64dp"/>
+            android:layout_height="64dp"
+            android:contentDescription="@string/call_button" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

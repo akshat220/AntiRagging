@@ -1,18 +1,25 @@
 package com.imad.antiragging;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,13 +30,17 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.Objects;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
-    FirebaseAuth auth;
-
+    private static final int STORAGE_REQUEST_CODE = 132;
+    private FirebaseAuth auth;
+    private ServiceResultReceiver serviceResultReceiver;
     private NavigationView navigationView;
     private AppBarConfiguration mAppBarConfiguration;
     @Override
@@ -91,6 +102,19 @@ public class MainActivity extends AppCompatActivity {
             });
             dialog.show();
             return true;
+        } else if(id == R.id.action_download) {
+            if(ActivityCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        STORAGE_REQUEST_CODE);
+            } else {
+                serviceResultReceiver = new ServiceResultReceiver(new Handler());
+                String url = getString(R.string.guideline_url);
+                Intent intent = new Intent(MainActivity.this, DownloadService.class);
+                intent.putExtra("receiver", serviceResultReceiver);
+                intent.putExtra("url", url);
+                startService(intent);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -121,6 +145,23 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(this).load(R.drawable.ic_person_black_24dp).into(profile);
             name.setText("");
             email.setText("");
+        }
+    }
+
+    class ServiceResultReceiver extends ResultReceiver {
+        public ServiceResultReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            switch (resultCode){
+                case DownloadService.DOWNLOAD_SUCCESS:
+                    String file_path = resultData.getString("file_path");
+                    Toast.makeText(getApplicationContext(), R.string.download_successful, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+            super.onReceiveResult(resultCode, resultData);
         }
     }
 }
