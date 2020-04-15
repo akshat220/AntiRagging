@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -32,6 +33,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class LocateFragment extends Fragment {
 
+    private String TEXTVIEW_STATE = "textview_state";
     private Button share, pick;
     private TextView address;
     private static final int MY_CODE = 94;
@@ -143,5 +145,18 @@ public class LocateFragment extends Fragment {
     public void onPause() {
         super.onPause();
         locationManager.removeUpdates(locationListener);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        if(savedInstanceState != null)
+            address.setText(savedInstanceState.getString(TEXTVIEW_STATE));
+        super.onViewStateRestored(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(TEXTVIEW_STATE, address.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 }

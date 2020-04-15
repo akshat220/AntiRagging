@@ -50,16 +50,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"/>
 
-                <TextView
-                    android:textStyle="italic"
-                    android:layout_gravity="center_vertical"
-                    android:textSize="12sp"
-                    tools:text="10th Dec, 2019"
-                    android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"/>
-
             </LinearLayout>
 
             <ImageButton

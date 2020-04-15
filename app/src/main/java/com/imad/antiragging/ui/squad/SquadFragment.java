@@ -15,12 +15,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.imad.antiragging.data.Member;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.imad.antiragging.R;
+import com.imad.antiragging.data.Member;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Objects;
 
 public class SquadFragment extends Fragment {
 
-    private FirebaseFirestore db;
+    private DatabaseReference reference;
     private List<Member> dataset;
     private SquadAdapter squadAdapter;
     private ProgressBar progressBar;
@@ -36,7 +37,7 @@ public class SquadFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_squad, container, false);
-        db = FirebaseFirestore.getInstance();
+        reference = FirebaseDatabase.getInstance().getReference();
         dataset = new ArrayList<>();
 
         if(ActivityCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CALL_PHONE)
@@ -54,21 +55,22 @@ public class SquadFragment extends Fragment {
 
     private void updateData(){
         progressBar.setVisibility(View.VISIBLE);
-        db.collection("Squad")
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        List<Member> data = new ArrayList<>();
-                        for (DocumentSnapshot document: queryDocumentSnapshots){
-                            data.add(document.toObject(Member.class));
-                        }
-                        dataset.clear();
-                        dataset.addAll(data);
-                        squadAdapter.notifyDataSetChanged();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+        reference.child("squad").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dataset.clear();
+                for(DataSnapshot member: dataSnapshot.getChildren()) {
+                    dataset.add(member.getValue(Member.class));
+                }
+                squadAdapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

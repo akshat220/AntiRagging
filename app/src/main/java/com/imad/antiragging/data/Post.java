@@ -1,6 +1,5 @@
 package com.imad.antiragging.data;
 
-import com.google.firebase.Timestamp;
 import com.google.gson.annotations.SerializedName;
 
 public class Post {
@@ -14,11 +13,11 @@ public class Post {
     @SerializedName("post")
     private String post;
     @SerializedName("date")
-    private Timestamp date;
+    private Long date;
 
     public Post(){}
 
-    public Post(String name, Timestamp date, String post, String image, String userid) {
+    public Post(String name, Long date, String post, String image, String userid) {
         this.name = name;
         this.userid = userid;
         this.image = image;
@@ -58,11 +57,11 @@ public class Post {
         this.post = post;
     }
 
-    public Timestamp getDate() {
+    public Long getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Long date) {
         this.date = date;
     }
 }

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.FirebaseDatabase;
 import com.imad.antiragging.R;
 import com.imad.antiragging.data.Post;
 
@@ -25,7 +25,7 @@ import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
 
-    private FirebaseFirestore db;
+    private FirebaseDatabase fb;
     private FirebaseAuth auth;
     private List<Post> dataset;
     static class MyViewHolder extends  RecyclerView.ViewHolder{
@@ -38,7 +38,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         MyViewHolder(final View itemView){
             super(itemView);
-            date = itemView.findViewById(R.id.date);
             name = itemView.findViewById(R.id.user_name);
             post = itemView.findViewById(R.id.post);
             edit = itemView.findViewById(R.id.edit);
@@ -57,7 +56,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_post, parent, false);
         auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        fb = FirebaseDatabase.getInstance();
         return new MyViewHolder(itemView);
     }
 
@@ -85,14 +84,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             public void onClick(final View view) {
 
                 AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
-                dialog.setTitle("Delete Post");
-                dialog.setMessage("Are you sure you want to Delete the post");
-                dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                dialog.setTitle(R.string.delete_post);
+                dialog.setMessage(R.string.delete_post_content);
+                dialog.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        db.collection("Posts")
-                                .document(dataset.get(position).getDate().getSeconds()+"")
-                                .delete();
+                        fb.getReference().child("posts")
+                                .child(dataset.get(position).getDate() + "")
+                                .removeValue();
                         dataset.remove(position);
                         notifyDataSetChanged();
                     }
@@ -112,8 +111,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             }
         });
         SimpleDateFormat format = new SimpleDateFormat("K:mm a E, MMM d", Locale.ENGLISH);
-        String date = format.format(currentPost.getDate().toDate());
-        holder.date.setText(date);
     }
 
     @Override
@@ -131,9 +128,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         dialog.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                db.collection("Posts")
-                        .document(dataset.get(position).getDate().getSeconds() + "")
-                        .update("post", editText.getText().toString());
+                fb.getReference().child("posts")
+                        .child(dataset.get(position).getDate() + "")
+                        .child("post").setValue(editText.getText().toString());
                 dataset.get(position).setPost(editText.getText().toString());
                 notifyDataSetChanged();
             }

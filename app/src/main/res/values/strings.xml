@@ -35,4 +35,8 @@
     <string name="guideline10">Any act of physical or mental abuse (including bullying and exclusion) targeted at another student (fresher or otherwise) on the ground of color, race, religion, origins, linguistic identity, place of birth, place of residence or economic background.</string>
     <string name="guideline11">All senior students are advised to guide and treat junior students affectionately.</string>
     <string name="guideline12">Junior students may contact their Chairperson or other University functionaries like Proctor, Dean Students Welfare, Chief Warden, Wardens or Chief Security Officer for help and guidance.</string>
+    <string name="post_the_message">Post the message</string>
+    <string name="delete_post">Delete Post</string>
+    <string name="delete_post_content">Are you sure you want to Delete the post</string>
+    <string name="yes">Yes</string>
 </resources>
